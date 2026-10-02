@@ -368,7 +368,7 @@ function Dashboard() {
 
                 <Link
                   to="/manageExpense"
-                  className="text-sm font-medium hover:underline"
+                  className="text-black text-sm font-medium hover:underline"
                 >
                   View all
                 </Link>
