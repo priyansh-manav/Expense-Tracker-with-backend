@@ -28,7 +28,7 @@ SECRET_KEY =  os.getenv("SECRET_KEY")
 DEBUG = os.getenv("DEBUG") == "True"
   
 ALLOWED_HOSTS = [
-    "EC2_PUBLIC_IP",
+    "expense-tracker-with-backend-7f6p.onrender.com",
     "localhost",
     "127.0.0.1",
 ]
