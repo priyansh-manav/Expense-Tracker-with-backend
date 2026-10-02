@@ -19,7 +19,7 @@ function Header() {
         {/* ================= LOGO ================= */}
         <Link
           to="/"
-          className="inline-flex items-center justify-center px-2 py-2 bg-gray-100 rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.18)] text-lg font-medium hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)] transition"
+          className="inline-flex items-center justify-center px-2 py-1 mr-3 bg-gray-100 rounded-full shadow-[0_8px_20px_rgba(0,0,0,0.18)] text-lg font-medium hover:shadow-[0_10px_25px_rgba(0,0,0,0.25)] transition"
         >
           <img
             src={expenseLogo}
