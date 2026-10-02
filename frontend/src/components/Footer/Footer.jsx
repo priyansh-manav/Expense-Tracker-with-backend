@@ -13,7 +13,7 @@ function Footer() {
         <div className="flex flex-wrap justify-between gap-10">
           {/* Logo / About */}
           <div className="max-w-sm">
-            <Link to="/" className="text-2xl font-semibold">
+            <Link to="/" className="text-black text-2xl font-semibold">
               ExpenseTrack — Made by Priyansh
             </Link>
 
@@ -27,28 +27,28 @@ function Footer() {
             <h3 className="font-semibold text-lg mb-3">Quick Links</h3>
 
             <div className="flex flex-col gap-2">
-              <Link to="/" className="hover:underline">
+              <Link to="/" className="text-black hover:underline">
                 Home
               </Link>
               {userid ? (
                 <>
-                  <Link to="/dashboard" className="hover:underline">
+                  <Link to="/dashboard" className="text-black hover:underline">
                     Dashboard
                   </Link>
-                  <Link to="/addExpense" className="hover:underline">
+                  <Link to="/addExpense" className="text-black hover:underline">
                     Add Expense
                   </Link>
-                  <Link to="/manageExpense" className="hover:underline">
+                  <Link to="/manageExpense" className="text-black hover:underline">
                     Manage Expense
                   </Link>
                 </>
               ) : (
                 <>
-                  <Link to="/about" className="hover:underline">
+                  <Link to="/about" className="text-black hover:underline">
                     About
                   </Link>
 
-                  <Link to="/contact-us" className="hover:underline">
+                  <Link to="/contact-us" className="text-black hover:underline">
                     Contact
                   </Link>
                 </>
@@ -61,11 +61,11 @@ function Footer() {
             <h3 className="font-semibold text-lg mb-3">Follow Us</h3>
 
             <div className="flex gap-3">
-              <a href="#" className="hover:underline">
+              <a href="#" className="text-black hover:underline">
                 Instagram
               </a>
 
-              <a href="#" className="hover:underline">
+              <a href="#" className="text-black hover:underline">
                 GitHub
               </a>
             </div>
@@ -77,11 +77,11 @@ function Footer() {
           <p>© 2026 MyWebsite. All rights reserved.</p>
 
           <div className="flex gap-4">
-            <Link to="/privacy" className="hover:underline">
+            <Link to="/privacy" className="text-black hover:underline">
               Privacy Policy
             </Link>
 
-            <Link to="/terms" className="hover:underline">
+            <Link to="/terms" className="text-black hover:underline">
               Terms
             </Link>
           </div>
