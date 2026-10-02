@@ -44,7 +44,7 @@ function Home() {
 
               <Link
                 to="/contact-us"
-                className=" px-7 py-3 rounded-full bg-[#e0e0e0] shadow-[8px_8px_16px_#bebebe,-8px_-8px_16px_#ffffff] hover:scale-105 transition"
+                className="text-black  px-7 py-3 rounded-full bg-[#e0e0e0] shadow-[8px_8px_16px_#bebebe,-8px_-8px_16px_#ffffff] hover:scale-105 transition"
               >
                 Contact Us
               </Link>
