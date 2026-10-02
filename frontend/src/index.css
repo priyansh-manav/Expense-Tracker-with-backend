@@ -1,0 +1,12 @@
+
+@import "tailwindcss";
+
+* {
+  
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none !important;
+  color: inherit !important;
+}

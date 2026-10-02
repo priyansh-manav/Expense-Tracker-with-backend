@@ -1,0 +1,158 @@
+import React, { useState } from "react";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { useNavigate } from "react-router-dom";
+
+function Signup() {
+  const nevigate = useNavigate();
+  const [formData, setFormData] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+  });
+
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const API_URL = import.meta.env.VITE_API_URL;
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const response = await fetch(`${API_URL}/signup/`, {
+        method: "POST",
+        header: { "Content-Type": "application/json" },
+        body: JSON.stringify(formData),
+      });
+
+      if (response.status === 201) {
+        toast.success("Signup SuccessFull! please login!");
+        setTimeout(() => {
+          nevigate("/login");
+        }, 2000);
+      } else {
+        const data = await response.json();
+        toast.error(data.message);
+      }
+    } catch (error) {
+      console.log("Error:", error);
+      toast.error("Something went wrong! try again");
+    }
+  };
+
+  return (
+    <>
+      <div className="min-h-screen bg-white text-black">
+        {/* ================= SIGNUP SECTION ================= */}
+
+        <main className="flex items-center justify-center px-5 py-12">
+          <div className="w-full max-w-md">
+            {/* Heading */}
+
+            <div className="text-center mb-8">
+              <div
+                className="inline-block px-5 py-3 mb-4 rounded-full bg-[#e0e0e0] shadow-[5px_5px_10px_#bebebe,-5px_-5px_10px_#ffffff] text-sm"
+              >
+                Create Account
+              </div>
+
+              <h1 className="text-4xl sm:text-5xl font-bold tracking-tight">
+                Join Us.
+              </h1>
+
+              <p className="text-gray-600 mt-4 text-base sm:text-lg">
+                Create your account and get started.
+              </p>
+            </div>
+
+            {/* ================= SIGNUP CARD ================= */}
+
+            <form
+              onSubmit={handleSubmit}
+              className="bg-[#e0e0e0] rounded-[30px] p-6 sm:p-8 shadow-[0_12px_30px_rgba(0,0,0,0.18)]"
+            >
+              {/* Full Name */}
+
+              <div className="mb-5">
+                <label className="block text-sm font-medium mb-2">
+                  Full Name
+                </label>
+
+                <input
+                  type="text"
+                  name="fullname"
+                  placeholder="Enter your name"
+                  required
+                  onChange={handleChange}
+                  value={formData.fullname}
+                  className="w-full px-5 py-4 bg-white border-none outline-none rounded-2xl shadow-sm text-base placeholder-gray-400 focus:ring-2 focus:ring-black transition"
+                />
+              </div>
+
+              <div className="mb-5">
+                <label className="block text-sm font-medium mb-2">
+                  Email Address
+                </label>
+
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Enter your email"
+                  required
+                  onChange={handleChange}
+                  value={formData.email}
+                  className="w-full px-5 py-4 bg-white border-none outline-none rounded-2xl shadow-sm text-base placeholder-gray-400 focus:ring-2 focus:ring-black transition"
+                />
+              </div>
+
+              {/* Password */}
+
+              <div className="mb-5">
+                <label className="block text-sm font-medium mb-2">
+                  Password
+                </label>
+
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Create a password"
+                  required
+                  onChange={handleChange}
+                  value={formData.password}
+                  className="w-full px-5 py-4 bg-white border-none outline-none rounded-2xl shadow-sm text-base placeholder-gray-400 focus:ring-2 focus:ring-black transition"
+                />
+              </div>
+
+              {/* Signup Button */}
+
+              <button
+                type="submit"
+                style={{ borderRadius: "9999px" }}
+                className="w-full py-4 bg-black text-white rounded-full text-lg font-medium hover:bg-gray-800 hover:scale-[1.02] transition duration-300 shadow-lg"
+              >
+                Create Account
+              </button>
+
+              {/* Login */}
+
+              <p className="text-center text-gray-600 mt-6">
+                Already have an account?{" "}
+                <a
+                  href="/login"
+                  className="text-black font-semibold hover:underline"
+                >
+                  Login
+                </a>
+              </p>
+            </form>
+          </div>
+        </main>
+
+        <ToastContainer />
+      </div>
+    </>
+  );
+}
+
+export default Signup;
