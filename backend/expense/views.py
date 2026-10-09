@@ -230,37 +230,60 @@ def change_password(request,user_id):
 
 
 import logging
-logger = logging.getLogger(name)
-
+logger = logging.getLogger(__name__)
 @csrf_exempt
 def search_expense(request, user_id):
     if request.method != "GET":
-     return JsonResponse({"message": "Only GET allowed"}, status=405)
- try:
-    from_date = request.GET.get("from")
-    to_date = request.GET.get("to")
+        return JsonResponse(
+            {"message": "Only GET method allowed"},
+            status=405
+        )
 
-    expenses = Expense.objects.filter(
-        UserId_id=user_id,
-        expensedate__range=[from_date, to_date]
-    )
+    try:
+        from_date = request.GET.get("from")
+        to_date = request.GET.get("to")
 
-    expense_list = list(expenses.values())
+        if not from_date or not to_date:
+            return JsonResponse(
+                {"message": "Please select both dates"},
+                status=400
+            )
 
-    total = expenses.aggregate(
-        total=Sum("expensecost")
-    )["total"] or 0
+        try:
+            start_date = date.fromisoformat(from_date)
+            end_date = date.fromisoformat(to_date)
+        except ValueError:
+            return JsonResponse(
+                {"message": "Invalid date format"},
+                status=400
+            )
 
-    return JsonResponse({
-        "expenses": expense_list,
-        "total": str(total),
-        "message": "Expenses fetched successfully"
-    })
+        if start_date > end_date:
+            return JsonResponse(
+                {"message": "From date cannot be after To date"},
+                status=400
+            )
 
- except Exception:
-    logger.exception("SEARCH_EXPENSE_ERROR")
-    return JsonResponse(
-        {"message": "Search failed. Check backend logs."},
-        status=500
-    )
+        expenses = Expense.objects.filter(
+            UserId_id=user_id,
+            expensedate__range=(start_date, end_date)
+        ).order_by("-expensedate")
 
+        expense_list = list(expenses.values())
+
+        total = expenses.aggregate(
+            total=Sum("expensecost")
+        )["total"] or Decimal("0.00")
+
+        return JsonResponse({
+            "expenses": expense_list,
+            "total": str(total),
+            "message": "Expenses fetched successfully"
+        })
+
+    except Exception:
+        logger.exception("SEARCH_EXPENSE_ERROR")
+        return JsonResponse(
+            {"message": "Search failed. Check backend logs."},
+            status=500
+        )
