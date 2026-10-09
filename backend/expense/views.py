@@ -4,6 +4,9 @@ from django.views.decorators.csrf import csrf_exempt
 import json
 from .models import *
 from django.db.models import Sum
+from datetime import date
+from decimal import Decimal
+from django.views.decorators.http import require_GET
 
 # Create your views here.
 
@@ -123,13 +126,57 @@ def change_password(request,user_id):
 
 
 
+# @csrf_exempt
+# def search_expense(request,user_id):
+#     if request.method == "GET":
+#         from_date = request.GET.get('from')
+#         to_date = request.GET.get('to')
+#         expenses = Expense.objects.filter(UserId = user_id,expensedate__range=[from_date,to_date])
+#         expense_list = list(expenses.values())
+#         agg = expenses.aggregate(Sum('expensecost'))
+#         total = agg['expensecost__sum'] or 0
+#         return JsonResponse({'expenses':expense_list,'total':total,'message':'something went wrong'})
+
 @csrf_exempt
-def search_expense(request,user_id):
-    if request.method == "GET":
-        from_date = request.GET.get('from')
-        to_date = request.GET.get('to')
-        expenses = Expense.objects.filter(UserId = user_id,expensedate__range=[from_date,to_date])
-        expense_list = list(expenses.values())
-        agg = expenses.aggregate(Sum('expensecost'))
-        total = agg['expensecost__sum'] or 0
-        return JsonResponse({'expenses':expense_list,'total':total,'message':'something went wrong'})
+@require_GET
+def search_expense(request, user_id):
+    from_date = request.GET.get("from")
+    to_date = request.GET.get("to")
+
+    if not from_date or not to_date:
+        return JsonResponse({
+            "message": "Please select both dates"
+        }, status=400)
+
+    try:
+        start_date = date.fromisoformat(from_date)
+        end_date = date.fromisoformat(to_date)
+
+        if start_date > end_date:
+            return JsonResponse({
+                "message": "From date cannot be after To date"
+            }, status=400)
+
+    except ValueError:
+        return JsonResponse({
+            "message": "Invalid date format"
+        }, status=400)
+
+    expenses = Expense.objects.filter(
+        UserId_id=user_id,
+        expensedate__range=(start_date, end_date)
+    )
+
+    expense_list = list(expenses.values())
+
+    total = expenses.aggregate(
+        total=Sum("expensecost")
+    )["total"] or Decimal("0.00")
+
+    return JsonResponse({
+        "expenses": expense_list,
+        "total": str(total),
+        "message": "Expenses fetched successfully"
+    })
+
+
