@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 from pathlib import Path
 from dotenv import load_dotenv
 import os
+import dj_database_url
 
 load_dotenv()
 
@@ -93,14 +94,22 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 #     }
 # }
 
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'djongo',
+#         'NAME': 'ExpenseTracker',
+#         'CLIENT': {
+#             'host': os.getenv('MONGO_URI')
+#         }
+#     }
+# }
+
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'djongo',
-        'NAME': 'ExpenseTracker',
-        'CLIENT': {
-            'host': os.getenv('MONGO_URI')
-        }
-    }
+    "default": dj_database_url.parse(
+        os.environ["DATABASE_URL"],
+        conn_max_age=60,
+    )
 }
 
 
