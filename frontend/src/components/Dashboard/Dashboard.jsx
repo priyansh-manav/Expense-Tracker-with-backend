@@ -26,11 +26,23 @@ function Dashboard() {
         `${API_URL}/search_expense/${userid}/?from=${fromDate}&to=${toDate}`,
       );
 
+      // const data = await response.json();
+      // setExpenses(data.expenses);
+      // setGrandTotal(data.total);
+
       const data = await response.json();
-      setExpenses(data.expenses);
-      setGrandTotal(data.total);
+
+   if (!response.ok) {
+  toast.error(data.message || "Search failed!");
+  return;
+    }
+
+   setExpenses(data.expenses);
+   setGrandTotal(data.total);
     } catch (error) {
-      toast.error("Something went wrong!");
+      // toast.error("Something went wrong!");
+      console.error("Search error:", error);
+     toast.error("Unable to connect to server. Please try again.");
     }
   };
 
