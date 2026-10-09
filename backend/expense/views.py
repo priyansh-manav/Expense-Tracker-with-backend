@@ -7,7 +7,7 @@ from django.db.models import Sum
 from datetime import date
 from decimal import Decimal
 from django.views.decorators.http import require_GET
-
+from decimal import Decimal, InvalidOperation
 # Create your views here.
 
 
@@ -271,9 +271,10 @@ def search_expense(request, user_id):
 
         expense_list = list(expenses.values())
 
-        total = expenses.aggregate(
-            total=Sum("expensecost")
-        )["total"] or Decimal("0.00")
+        total = sum(
+    (Decimal(str(expense["expensecost"])) for expense in expense_list),
+    Decimal("0.00")
+)
 
         return JsonResponse({
             "expenses": expense_list,
