@@ -234,9 +234,9 @@ logger = logging.getLogger(name)
 
 @csrf_exempt
 def search_expense(request, user_id):
-if request.method != "GET":
-return JsonResponse({"message": "Only GET allowed"}, status=405)
-try:
+    if request.method != "GET":
+     return JsonResponse({"message": "Only GET allowed"}, status=405)
+ try:
     from_date = request.GET.get("from")
     to_date = request.GET.get("to")
 
@@ -257,7 +257,7 @@ try:
         "message": "Expenses fetched successfully"
     })
 
-except Exception:
+ except Exception:
     logger.exception("SEARCH_EXPENSE_ERROR")
     return JsonResponse(
         {"message": "Search failed. Check backend logs."},
