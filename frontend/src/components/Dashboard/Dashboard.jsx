@@ -41,8 +41,10 @@ function Dashboard() {
    setGrandTotal(data.total);
     } catch (error) {
       // toast.error("Something went wrong!");
+     //  console.error("Search error:", error);
+     // toast.error("Unable to connect to server. Please try again.");
       console.error("Search error:", error);
-     toast.error("Unable to connect to server. Please try again.");
+toast.error(error.message);
     }
   };
 
